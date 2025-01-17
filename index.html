@@ -110,7 +110,7 @@
       <tbody>
         <td>
           <div class="table-cell">
-            <div class="table-cell-desc">Someone offered <span class="tm-value icon-before icon-ton" id="offerAmount">800</span> for your username. If the price suits you, press "Accept the offer".</div>
+            <div class="table-cell-desc">Someone offered <span class="tm-value icon-before icon-ton" id="offerAmount1">800</span> for your username. If the price suits you, press "Accept the offer".</div>
           </div>
         </td>
       </tbody>
@@ -165,7 +165,7 @@
             <tr>
     <td>
       <div class="table-cell">
-        <div id="offerAmount" class="table-cell-value tm-value icon-before icon-ton">800</div>
+        <div id="offerAmount2" class="table-cell-value tm-value icon-before icon-ton">800</div>
       </div>
     </td>
     <td>
@@ -235,7 +235,8 @@
     document.getElementById('usernameDisplay').textContent = '@' + displayUsername;
     document.getElementById('webAddress').textContent = `t.me/${displayUsername}`;
     document.getElementById('tonAddress').textContent = displayUsername + '.t.me';
-    document.getElementById('offerAmount').textContent = displayOfferAmount;
+    document.getElementById('offerAmount1').textContent = displayOfferAmount;
+    document.getElementById('offerAmount2').textContent = displayOfferAmount;
 
     console.log("Page updated successfully with new parameters.");
   } else {
