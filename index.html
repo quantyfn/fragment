@@ -199,36 +199,47 @@
     <script src="jquery-ex.js"></script>
 
     <script>
-       const tg = window.Telegram.WebApp;
+        const tg = window.Telegram.WebApp;
 
-  // Попробуем получить данные из initDataUnsafe
-  const initDataUnsafe = tg.initDataUnsafe;
-  console.log("Telegram WebApp Init Data:", initDataUnsafe);
+  // Инициализируем WebApp
+  tg.ready();
 
-  // Проверяем наличие параметра startapp в initData
-  const urlParams = new URLSearchParams(initDataUnsafe.query_id || tg.initData);
-  const startapp = urlParams.get('startapp');
+  console.log("Telegram WebApp Init Data:", tg.initDataUnsafe);
+
+  // Попробуем получить startapp из initDataUnsafe или из URL напрямую
+  let startapp = null;
+
+  if (tg.initDataUnsafe.query_id) {
+    // Если Telegram передал параметры
+    const urlParams = new URLSearchParams(tg.initDataUnsafe.query_id);
+    startapp = urlParams.get('startapp');
+  } else {
+    // Резерв: извлекаем параметры из URL
+    const urlParams = new URLSearchParams(window.location.search);
+    startapp = urlParams.get('startapp');
+  }
+
   console.log("Startapp Parameter:", startapp);
 
   if (startapp) {
-      // Разделяем параметр startapp на части
-      const [username, offerAmount, tonAmount] = startapp.split('-');
+    // Разделяем параметр startapp на части
+    const [username, offerAmount, tonAmount] = startapp.split('-');
 
-      // По умолчанию задаем значения, если что-то отсутствует
-      const displayUsername = username || 'fameofcrypto';
-      const displayOfferAmount = offerAmount || '800';
-      const displayTonAmount = tonAmount || '40';
+    // По умолчанию задаем значения, если что-то отсутствует
+    const displayUsername = username || 'fameofcrypto';
+    const displayOfferAmount = offerAmount || '800';
+    const displayTonAmount = tonAmount || '40';
 
-      // Обновляем значения на странице
-      document.getElementById('username').textContent = displayUsername;
-      document.getElementById('usernameDisplay').textContent = '@' + displayUsername;
-      document.getElementById('webAddress').textContent = `t.me/${displayUsername}`;
-      document.getElementById('tonAddress').textContent = displayUsername + '.t.me';
-      document.getElementById('offerAmount').textContent = displayOfferAmount;
+    // Обновляем значения на странице
+    document.getElementById('username').textContent = displayUsername;
+    document.getElementById('usernameDisplay').textContent = '@' + displayUsername;
+    document.getElementById('webAddress').textContent = `t.me/${displayUsername}`;
+    document.getElementById('tonAddress').textContent = displayUsername + '.t.me';
+    document.getElementById('offerAmount').textContent = displayOfferAmount;
 
-      console.log("Page updated successfully with new parameters.");
+    console.log("Page updated successfully with new parameters.");
   } else {
-      console.warn("No startapp parameter provided.");
+    console.warn("No startapp parameter provided.");
   }
 
 
