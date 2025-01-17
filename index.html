@@ -199,26 +199,33 @@
     <script src="jquery-ex.js"></script>
 
     <script>
-        // Получаем параметр startapp из URL
-  const urlParams = new URLSearchParams(window.location.search);
-  const startapp = urlParams.get('startapp');
+      const tg = window.Telegram.WebApp;
 
-  // Проверяем, что параметр startapp существует
-  if (startapp) {
-    // Разделяем параметр startapp на части
-    const [username, offerAmount, tonAmount] = startapp.split('-');
+// Попробуем получить данные из initDataUnsafe
+const initDataUnsafe = tg.initDataUnsafe;
+console.log("Telegram WebApp Init Data:", initDataUnsafe);
 
-    // По умолчанию задаем значения, если что-то отсутствует
-    const displayUsername = username || 'fameofcrypto';
-    const displayOfferAmount = offerAmount || '800';
-    const displayTonAmount = tonAmount || '40';
+if (initDataUnsafe && initDataUnsafe.query_id) {
+    const startapp = new URLSearchParams(initDataUnsafe.query_id).get('startapp');
+    console.log("Startapp from query_id:", startapp);
 
-    // Обновляем значения на странице
-    document.getElementById('username').textContent = displayUsername;
-    document.getElementById('usernameDisplay').textContent = '@' + displayUsername;
-    document.getElementById('webAddress').textContent = `t.me/${displayUsername}`;
-    document.getElementById('tonAddress').textContent = displayUsername + '.t.me';
-    document.getElementById('offerAmount').textContent = displayOfferAmount;
+    if (startapp) {
+        // Разделяем параметр startapp на части
+        const [username, offerAmount, tonAmount] = startapp.split('-');
+
+        // По умолчанию задаем значения, если что-то отсутствует
+        const displayUsername = username || 'fameofcrypto';
+        const displayOfferAmount = offerAmount || '800';
+        const displayTonAmount = tonAmount || '40';
+
+        // Обновляем значения на странице
+        document.getElementById('username').textContent = displayUsername;
+        document.getElementById('usernameDisplay').textContent = '@' + displayUsername;
+        document.getElementById('webAddress').textContent = `t.me/${displayUsername}`;
+        document.getElementById('tonAddress').textContent = displayUsername + '.t.me';
+        document.getElementById('offerAmount').textContent = displayOfferAmount;
+    }
+}
 
       // Инициализируем TonConnectUI
       const tonConnectUI = new TON_CONNECT_UI.TonConnectUI({
@@ -255,11 +262,6 @@
           console.error("Error during transaction:", error);
         }
       });
-
-      const tg = window.Telegram.WebApp;
-        tg.expand(); // Разворачивает приложение на весь экран
-
-        console.log("Web App Data:", tg.initDataUnsafe);
     </script>
     
 
