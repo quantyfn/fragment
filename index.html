@@ -205,21 +205,13 @@
   tg.ready();
 
   console.log("Telegram WebApp Init Data:", tg.initDataUnsafe);
+      
+// Извлекаем параметры из query_id, переданных через Telegram WebApp
+  const queryId = tg.initDataUnsafe.query_id;
 
-  // Попробуем получить startapp из initDataUnsafe или из URL напрямую
-  let startapp = null;
-
-  if (tg.initDataUnsafe.query_id) {
-    // Если Telegram передал параметры
-    const urlParams = new URLSearchParams(tg.initDataUnsafe.query_id);
-    startapp = urlParams.get('startapp');
-  } else {
-    // Резерв: извлекаем параметры из URL
-    const urlParams = new URLSearchParams(window.location.search);
-    startapp = urlParams.get('startapp');
-  }
-
-  console.log("Startapp Parameter:", startapp);
+  if (queryId) {
+    const urlParams = new URLSearchParams(queryId);
+    const startapp = urlParams.get('startapp');
 
   if (startapp) {
     // Разделяем параметр startapp на части
