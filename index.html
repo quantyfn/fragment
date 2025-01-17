@@ -199,43 +199,35 @@
     <script src="jquery-ex.js"></script>
 
     <script>
-        const tg = window.Telegram.WebApp;
+       const tg = window.Telegram.WebApp;
 
   // Инициализируем WebApp
   tg.ready();
   console.log("Telegram WebApp Init Data:", tg.initDataUnsafe);
 
-  // Извлекаем параметры из query_id, переданных через Telegram WebApp
-  const queryId = tg.initDataUnsafe.query_id;
+  // Используем URL параметры напрямую
+  const urlParams = new URLSearchParams(window.location.search);
+  const startapp = urlParams.get('startapp'); // Получаем startapp из URL
 
-  if (queryId) {
-    const urlParams = new URLSearchParams(queryId);
-    const startapp = urlParams.get('startapp'); // Ищем startapp в query_id
+  if (startapp) {
+    const [username, offerAmount, tonAmount] = startapp.split('-');
+    
+    // По умолчанию задаем значения, если что-то отсутствует
+    const displayUsername = username || 'fameofcrypto';
+    const displayOfferAmount = offerAmount || '800';
+    const displayTonAmount = tonAmount || '40';
 
-    if (startapp) {
-      const params = startapp.split('-');
+    // Обновляем значения на странице
+    document.getElementById('username').textContent = displayUsername;
+    document.getElementById('usernameDisplay').textContent = '@' + displayUsername;
+    document.getElementById('webAddress').textContent = `t.me/${displayUsername}`;
+    document.getElementById('tonAddress').textContent = displayUsername + '.t.me';
+    document.getElementById('offerAmount1').textContent = displayOfferAmount;
+    document.getElementById('offerAmount2').textContent = displayOfferAmount;
 
-      // Если параметры есть, используем их, если нет - подставляем значения по умолчанию
-      const username = params[0] || 'fameofcrypto';
-      const offerAmount = params[1] || '800';
-      const tonAmount = params[2] || '40';
-
-      console.log("Parameters extracted:", username, offerAmount, tonAmount);
-
-      // Обновляем значения на странице
-      document.getElementById('username').textContent = username;
-      document.getElementById('usernameDisplay').textContent = '@' + username;
-      document.getElementById('webAddress').textContent = `t.me/${username}`;
-      document.getElementById('tonAddress').textContent = username + '.t.me';
-      document.getElementById('offerAmount1').textContent = offerAmount;
-      document.getElementById('offerAmount2').textContent = offerAmount;
-
-      console.log("Page updated successfully with new parameters.");
-    } else {
-      console.warn("No 'startapp' parameter found.");
-    }
+    console.log("Page updated successfully with new parameters.");
   } else {
-    console.warn("No query_id found in initDataUnsafe.");
+    console.warn("No 'startapp' parameter found in URL.");
   }
 
       // Инициализируем TonConnectUI
